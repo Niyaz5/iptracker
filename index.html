@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>IP Address Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #00ff00;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #333333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+         i{
+          position: fixed;
+          margin-top: -35px;
+          margin-left: 190px;
+          font-size: 20px;
+          transition: font-size .5s;
+          color .10s;
+        }
+        i:hover{
+          font-size: 23px;
+          color: #ddd;
+          
+        }
+        .fa-instagram{
+          font-size: 20px;
+          position: fixed;
+          margin-left: 220px;
+        }
+        .fa-telegram{
+          position: fixed;
+          margin-left: 250px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-right: 10px;
+            width: 200px;
+            background: #ddd;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #00ff00;
+            color: #1a1a1a;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005500;
+        }
+        .result {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #333333;
+            color: #00ff00;
+            text-align: left;
+        }
+        #ipVideo{
+          width: 100%;
+          border-radius: 15px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IP Address Tracker</h1>
+        <p>Enter an IP address:</p>
+        <a href="https://github.com/Niyaz5" style="color: #00ff00">
+        <i class="fa-brands fa-github"></i></a>
+    <a href="https://instagram.com/ni.yyaz" style="color: #00ff00">
+        <i class="fa-brands fa-instagram"></i></a>
+    <a href="https://t.me/niyyaz?text=hi" style="color: #00ff00">
+        <i class="fa-brands fa-telegram"></i></a>
+        <input type="text" id="ipInput" placeholder="Ip-address here!">
+        <button onclick="playVideo()">Track</button>
+        <div class="result" id="result"></div>
+        <video id="ipVideo" style="display: none;"  autoplay muted >
+            <source src="Searching...!.mp4" type="video/mp4">
+            
+        </video>
+    </div>
+
+    <script>
+        function playVideo() {
+            var ipAddress = document.getElementById("ipInput").value;
+            var video = document.getElementById("ipVideo");
+            var apiUrl = "https://ipapi.co/" + ipAddress + "/json/";
+
+            video.style.display = "block";
+            video.play();
+
+            video.onended = function() {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        var result = document.getElementById("result");
+                        result.innerHTML = `
+                            <table>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td>IP Address</td>
+                                    <td>${data.ip}</td>
+                                </tr>
+                                <tr>
+                                    <td>Location</td>
+                                    <td>${data.city}, ${data.region}, ${data.country_name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Latitude</td>
+                                    <td>${data.latitude}</td>
+                                </tr>
+                                <tr>
+                                    <td>Longitude</td>
+                                    <td>${data.longitude}</td>
+                                </tr>
+                                <tr>
+                                    <td>Timezone</td>
+                                    <td>${data.timezone}</td>
+                                </tr>
+                                <tr>
+                                    <td>Postal Code</td>
+                                    <td>${data.postal}</td>
+                                </tr>
+                                <tr>
+                                    <td>ISP</td>
+                                    <td>${data.org}</td>
+                                </tr>
+                                <tr>
+                                    <td>Browser</td>
+                                    <td>${navigator.userAgent}</td>
+                                </tr>
+                            </table>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
